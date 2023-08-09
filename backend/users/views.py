@@ -91,8 +91,8 @@ class CustomUserViewSet(UserViewSet):
 
             if not created:
                 return Response(
-                  {"error": "Вы уже подписаны на этого пользователя."},
-                  status=status.HTTP_400_BAD_REQUEST,
+                    {"error": "Вы уже подписаны на этого пользователя."},
+                    status=status.HTTP_400_BAD_REQUEST,
                 )
 
             serializer = self.get_serializer(subscription)

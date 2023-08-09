@@ -11,8 +11,7 @@ from app.generate_shopping_cart import generate_shopping_list
 from app.models import (Favorite, Ingredient, Recipe, RecipeIngredients,
                         Shopping, Tag)
 from app.pagination import CustomPagination
-from app.permissions import (IsAuthorOrReadOnly, IsOwnerOrStaffOrReadOnly,
-                             ReadOnly)
+from app.permissions import IsAuthorOrReadOnly, ReadOnly
 from app.serializers import (IngredientSerializer, RecipeCreateSerializer,
                              RecipeFavoriteSerializer, RecipeSerializer,
                              TagSerializer)
