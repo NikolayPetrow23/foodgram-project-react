@@ -80,7 +80,7 @@ class CustomUserViewSet(UserViewSet):
         if request.method == "POST":
             if current_user.id == int(id):
                 return Response(
-                    {"error": "You cannot subscribe to yourself."},
+                    {"error": "Вы не можете подписаться на себя."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
@@ -91,7 +91,7 @@ class CustomUserViewSet(UserViewSet):
 
             if not created:
                 return Response(
-                  {"error": "You are already subscribed to this user."},
+                  {"error": "Вы уже подписаны на этого пользователя."},
                   status=status.HTTP_400_BAD_REQUEST,
                 )
 
@@ -107,12 +107,12 @@ class CustomUserViewSet(UserViewSet):
             if follow_relationship.exists():
                 follow_relationship.delete()
                 return Response(
-                    {"message": "You have unsubscribed from this user."},
+                    {"message": "Вы отписались от пользователя."},
                     status=status.HTTP_204_NO_CONTENT,
                 )
 
             return Response(
-                {"error": "You are not subscribed to this user."},
+                {"error": "Вы не подписаны на этого пользователя."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -143,6 +143,6 @@ class CustomPasswordChangeView(APIView):
         user.save()
 
         return Response(
-            {'message': 'Password changed successfully'},
+            {'message': 'Пороль успешно изменен'},
             status=status.HTTP_200_OK
         )

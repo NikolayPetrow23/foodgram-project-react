@@ -103,8 +103,9 @@ class Recipe(models.Model):
     cooking_time = models.PositiveIntegerField(
         validators=(
             validators.MinValueValidator(
-              1,
-              message="Время приготовления должно быть больше нуля."),
+                1,
+                message="Время приготовления должно быть больше нуля."
+            ),
         ),
     )
 

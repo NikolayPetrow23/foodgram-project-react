@@ -136,9 +136,9 @@ class Base64ImageField(serializers.ImageField):
                     name=f'image.{ext}'
                 )
                 return super().to_internal_value(data)
-            except Exception as e:
+            except Exception:
                 raise serializers.ValidationError(
-                    "Invalid image. Failed to decode Base64 data."
+                    "Изображение не может быть закодировано."
                 )
 
         return super().to_internal_value(data)

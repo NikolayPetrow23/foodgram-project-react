@@ -78,10 +78,11 @@ class RecipeViewSet(ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-    @action(detail=True,
-            methods=['post', 'delete'],
-            url_path='favorite',
-            permission_classes=(permissions.IsAuthenticated,)
+    @action(
+        detail=True,
+        methods=['post', 'delete'],
+        url_path='favorite',
+        permission_classes=(permissions.IsAuthenticated,)
     )
     def favorite(self, request, pk=None):
         """
@@ -100,12 +101,12 @@ class RecipeViewSet(ModelViewSet):
                 favorite = Favorite.objects.get(user=user, recipe=recipe)
                 favorite.delete()
                 return Response(
-                    {'detail': 'Recipe removed from favorites.'},
+                    {'detail': 'Рецепт удален из ибранного.'},
                     status=204
                 )
             except Favorite.DoesNotExist:
                 return Response(
-                    {'detail': 'Recipe is not in favorites.'},
+                    {'detail': 'Рецепта нет в избранном.'},
                     status=404
                 )
 
@@ -142,12 +143,12 @@ class RecipeViewSet(ModelViewSet):
                 shopping_obj = Shopping.objects.get(user=user, recipe=recipe)
                 shopping_obj.delete()
                 return Response(
-                    {'detail': 'Recipe removed from shopping list.'},
+                    {'detail': 'Рецепт удален из списка покупок.'},
                     status=204
                 )
             except Favorite.DoesNotExist:
                 return Response(
-                    {'detail': 'Recipe is not in shopping list.'},
+                    {'detail': 'Рецепта нет в списке покупок.'},
                     status=404
                 )
 
@@ -181,9 +182,8 @@ class RecipeViewSet(ModelViewSet):
                 pdf_buffer.getvalue(),
                 content_type='application/pdf'
             )
-            response['Content-Disposition'] = (f'attachment; '
-                                               f'filename='
-                                               f'"shopping_list.pdf"')
+            attachment = 'attachment; filename="shopping_list.pdf"'
+            response['Content-Disposition'] = attachment
 
             return response
 
