@@ -69,20 +69,19 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up nodeJS
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
 
       - name: Install dependencies
         run: |
           cd frontend/
           npm ci
 
-      - name: Check frontend code with ESLint
+      - name: Lint frontend code
         run: |
           cd frontend/
-          npx eslint
-#
+          npx eslint .
 #    steps:
 #      - uses: actions/checkout@v3
 #      - name: Set up nodeJS
