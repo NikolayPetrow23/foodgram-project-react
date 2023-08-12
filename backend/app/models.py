@@ -112,7 +112,8 @@ class Recipe(models.Model):
             ),
             validators.MaxValueValidator(
                 600,
-                message="Время приготовления не должно быть больше десяти часов."
+                message="Время приготовления не "
+                        "должно быть больше десяти часов."
             )
         ),
     )

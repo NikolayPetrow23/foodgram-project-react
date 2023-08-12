@@ -165,8 +165,8 @@ class RecipeViewSet(ModelViewSet):
 
         if not shop_cart:
             return Response(
-              {'message': 'Список покупок пуст!'},
-              status=status.HTTP_200_OK
+                {'message': 'Список покупок пуст!'},
+                status=status.HTTP_200_OK
             )
 
         recipe_ids = shop_cart.values_list('recipe', flat=True)
