@@ -1,6 +1,5 @@
-from django_filters import rest_framework as filters
-
 from app.models import Ingredient, Recipe
+from django_filters import rest_framework as filters
 from users.models import User
 
 RECIPE_CHOICE = (

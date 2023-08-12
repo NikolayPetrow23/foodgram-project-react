@@ -1,8 +1,7 @@
+from app.validators import validate_hex
 from django.core import validators
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-from app.validators import validate_hex
 from users.models import User
 
 

@@ -2,7 +2,6 @@ from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions as django_exceptions
 from djoser.serializers import UserSerializer
 from rest_framework import serializers
-
 from users.models import Follow, User
 
 

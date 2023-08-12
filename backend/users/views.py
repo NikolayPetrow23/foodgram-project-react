@@ -1,3 +1,5 @@
+from app.pagination import CustomPagination
+from app.permissions import IsOwnerOrStaffOrReadOnly
 from djoser.views import UserViewSet
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
@@ -6,9 +8,6 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from app.pagination import CustomPagination
-from app.permissions import IsOwnerOrStaffOrReadOnly
 from users.models import Follow, User
 from users.serializers import (CustomUserResetPassword, CustomUserSerializer,
                                FollowSerializer, SignUpUserSerializer)

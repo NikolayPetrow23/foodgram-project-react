@@ -1,7 +1,6 @@
-from django.contrib import admin
-
 from app.models import (Favorite, Ingredient, Recipe, RecipeIngredients,
                         Shopping, Tag)
+from django.contrib import admin
 from users.admin import IS_EMPTY_MESSAGE
 
 
