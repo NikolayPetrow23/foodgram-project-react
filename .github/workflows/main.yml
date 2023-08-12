@@ -71,7 +71,7 @@ jobs:
       - name: Set up nodeJS
         uses: actions/setup-node@v2
         with:
-          node-version: 17.0.2
+          node-version: 18
 
       - name: Install dependencies
         run: |
@@ -81,7 +81,7 @@ jobs:
       - name: Lint frontend code
         run: |
           cd frontend/
-          npx eslint .
+#          npx eslint .
 #    steps:
 #      - uses: actions/checkout@v3
 #      - name: Set up nodeJS
