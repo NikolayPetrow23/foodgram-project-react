@@ -51,10 +51,8 @@ class CustomUserSerializer(UserSerializer):
     def get_is_subscribed(self, obj):
         user = self.context["request"].user
         if not user.is_anonymous:
-            if Follow.objects.filter(user=user, author=obj).exists():
-                return True
-            return False
-        return None
+            return Follow.objects.filter(user=user, author=obj).exists()
+        return False
 
 
 class CustomUserResetPassword(serializers.Serializer):
@@ -113,23 +111,19 @@ class FollowSerializer(serializers.ModelSerializer):
 
     def get_is_subscribed(self, obj):
         user = self.context["request"].user
-        print(self.context)
-        # follow = self.context["follow"]
         if not user.is_anonymous:
-            if Follow.objects.filter(user=user, author=obj.author).exists():
-                return True
-            return False
-        return None
+            return Follow.objects.filter(user=user, author=obj.author).exists()
+        return False
 
     def get_recipes(self, obj):
         from app.serializers import RecipeFavoriteSerializer
         request = self.context.get("request")
         limit = request.GET.get("recipes_limit")
-        recipes = (
-            obj.author.recipes_user.all()[: int(limit)]
-            if limit
-            else obj.author.recipes_user.all()
-        )
+
+        if not limit:
+            recipes = obj.author.recipes_user.all()
+
+        recipes = obj.author.recipes_user.all()[: int(limit)]
 
         return RecipeFavoriteSerializer(
             recipes,

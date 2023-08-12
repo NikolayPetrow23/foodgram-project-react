@@ -16,7 +16,7 @@ def generate_shopping_list(shopping_items: QuerySet):
     Функция генерации PDF-файла.
     """
     pdf_buffer = BytesIO()
-    c = canvas.Canvas(pdf_buffer, pagesize=letter)
+    pdf_canvas = canvas.Canvas(pdf_buffer, pagesize=letter)
     pdfmetrics.registerFont(
         TTFont(
             "DejaVuSerif",
@@ -24,28 +24,28 @@ def generate_shopping_list(shopping_items: QuerySet):
             "UTF-8")
     )
 
-    c.setFont("DejaVuSerif", 16)
-    c.drawString(200, 750, "Продуктовый помощник")
+    pdf_canvas.setFont("DejaVuSerif", 16)
+    pdf_canvas.drawString(200, 750, "Продуктовый помощник")
 
     page_width, _ = letter
     line_y = 730
-    c.line(100, 730, page_width - 100, line_y)
+    pdf_canvas.line(100, 730, page_width - 100, line_y)
 
-    c.setFont("DejaVuSerif", 13)
-    c.drawString(100, 700, "Список покупок:")
+    pdf_canvas.setFont("DejaVuSerif", 13)
+    pdf_canvas.drawString(100, 700, "Список покупок:")
 
-    c.setFont("DejaVuSerif", 10)
-    y = 670
+    pdf_canvas.setFont("DejaVuSerif", 10)
+    line = 670
 
     for shopping_item in shopping_items:
-        c.drawString(
-            120, y,
+        pdf_canvas.drawString(
+            120, line,
             (f"• {shopping_item[NAME_INGREDIENT]} - "
              f"{shopping_item[AMOUNT_INGREDIENT]} "
              f"{shopping_item[UNIT_INGREDIENT]}")
         )
-        y -= 20
+        line -= 20
 
-    c.save()
+    pdf_canvas.save()
 
     return pdf_buffer

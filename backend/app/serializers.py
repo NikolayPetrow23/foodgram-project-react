@@ -97,16 +97,16 @@ class RecipeSerializer(serializers.ModelSerializer):
             ingredients_data = validated_data.pop('recipe_ingredients')
             RecipeIngredients.objects.filter(recipe=instance).delete()
 
-            for ingredient_data in ingredients_data:
-                ingredient = ingredient_data.get('ingredient')
-
-                amount = ingredient_data.get('amount')
-
-                RecipeIngredients.objects.create(
+            ingredient_objs = [
+                RecipeIngredients(
                     recipe=instance,
-                    ingredient_id=ingredient['id'].id,
-                    amount=amount
+                    ingredient_id=ingredient_data['ingredient']['id'].id,
+                    amount=ingredient_data['amount']
                 )
+                for ingredient_data in ingredients_data
+            ]
+
+            RecipeIngredients.objects.bulk_create(ingredient_objs)
 
         return super().update(instance, validated_data)
 
@@ -121,25 +121,6 @@ class RecipeSerializer(serializers.ModelSerializer):
         representation['tags'] = tags_data
 
         return representation
-
-
-# class Base64ImageField(serializers.ImageField):
-#     def to_internal_value(self, data):
-#         if isinstance(data, str) and data.startswith('data:image'):
-#             try:
-#                 format, imgstr = data.split(';base64,')
-#                 ext = format.split('/')[-1]
-#                 data = ContentFile(
-#                     base64.b64decode(imgstr),
-#                     name=f'image.{ext}'
-#                 )
-#                 return super().to_internal_value(data)
-#             except Exception:
-#                 raise serializers.ValidationError(
-#                     "Изображение не может быть закодировано."
-#                 )
-#
-#         return super().to_internal_value(data)
 
 
 class RecipeCreateSerializer(serializers.ModelSerializer):
@@ -171,17 +152,16 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         tags_data = validated_data.pop('tags')
         recipe = Recipe.objects.create(**validated_data)
 
-        for ingredient_data in ingredients_data:
-            ingredient = ingredient_data.get('ingredient')
-            amount = ingredient_data.get('amount')
-
-            RecipeIngredients.objects.create(
+        ingredient_objs = [
+            RecipeIngredients(
                 recipe=recipe,
-                ingredient=ingredient.get('id'),
-                amount=amount
+                ingredient_id=ingredient_data['ingredient']['id'].id,
+                amount=ingredient_data['amount']
             )
+            for ingredient_data in ingredients_data
+        ]
 
-            recipe.tags.set(tags_data)
+        RecipeIngredients.objects.bulk_create(ingredient_objs)
 
         return recipe
 

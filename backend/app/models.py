@@ -39,6 +39,10 @@ class RecipeIngredients(models.Model):
             validators.MinValueValidator(
                 1,
                 message="Количество должно быть больше нуля."),
+            validators.MaxValueValidator(
+                10000,
+                message="Количество не должно быть больше 10000 грамм."
+            )
         ),
         verbose_name="Количество",
     )
@@ -106,6 +110,10 @@ class Recipe(models.Model):
                 1,
                 message="Время приготовления должно быть больше нуля."
             ),
+            validators.MaxValueValidator(
+                600,
+                message="Время приготовления не должно быть больше десяти часов."
+            )
         ),
     )
 

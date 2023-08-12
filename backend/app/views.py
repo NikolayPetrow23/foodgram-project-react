@@ -64,7 +64,7 @@ class RecipeViewSet(ModelViewSet):
     def get_queryset(self):
         recipes = Recipe.objects.prefetch_related(
             'recipe_ingredients__ingredient', 'tags'
-        ).all()
+        )
         return recipes
 
     def get_serializer_class(self):
@@ -163,31 +163,30 @@ class RecipeViewSet(ModelViewSet):
         user = request.user
         shop_cart = Shopping.objects.filter(user=user)
 
-        if shop_cart:
-            recipe_ids = shop_cart.values_list('recipe', flat=True)
-
-            ingredients_data = RecipeIngredients.objects.filter(
-                recipe__in=recipe_ids
-            ).values_list(
-                'ingredient__name',
-                'ingredient__measurement_unit',
-            ).annotate(
-                amount=Sum('amount')
-            )
-
-            pdf_buffer = generate_shopping_list(ingredients_data)
-
-            response = HttpResponse(
-                pdf_buffer.getvalue(),
-                content_type='application/pdf'
-            )
-            attachment = 'attachment; filename="shopping_list.pdf"'
-            response['Content-Disposition'] = attachment
-
-            return response
-
-        else:
+        if not shop_cart:
             return Response(
-                {'message': 'Список покупок пуст!'},
-                status=status.HTTP_200_OK
+              {'message': 'Список покупок пуст!'},
+              status=status.HTTP_200_OK
             )
+
+        recipe_ids = shop_cart.values_list('recipe', flat=True)
+
+        ingredients_data = RecipeIngredients.objects.filter(
+            recipe__in=recipe_ids
+        ).values_list(
+            'ingredient__name',
+            'ingredient__measurement_unit',
+        ).annotate(
+            amount=Sum('amount')
+        )
+
+        pdf_buffer = generate_shopping_list(ingredients_data)
+
+        response = HttpResponse(
+            pdf_buffer.getvalue(),
+            content_type='application/pdf'
+        )
+        attachment = 'attachment; filename="shopping_list.pdf"'
+        response['Content-Disposition'] = attachment
+
+        return response

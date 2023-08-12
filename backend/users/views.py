@@ -53,10 +53,6 @@ class CustomUserViewSet(UserViewSet):
         'retrieve': [permissions.AllowAny],
     }
 
-    def get_queryset(self):
-        print(self.request)
-        return User.objects.all()
-
     def get_serializer_class(self):
         if self.action == 'create':
             return SignUpUserSerializer
