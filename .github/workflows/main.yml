@@ -65,6 +65,8 @@ jobs:
             source: "infra/docker-compose.yml"
             target: "foodgram"
             script: |
+               cd foodgram
+               cd infra
               sudo docker-compose stop backend
               sudo docker-compose rm backend
               sudo docker system prune -a
