@@ -1,34 +1,31 @@
-name: Main Foodgram workflow!
+name: Foodgram-project workflow
 
-on:
-  push:
-    branches:
-      - master
+on: [push]
 
 jobs:
+
   tests:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
-
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install flake8==6.0.0 flake8-isort==6.0.0
-        pip install -r backend/requirements.txt
+        pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort
+        pip install -r ./backend/requirements.txt
 
-    - name: Test with flake8
+    - name: Test with flake8 and pytest
       run: |
-        flake8
-        cd backend/
+        python -m flake8
 
   build_and_push_to_docker_hub:
-    name: Push Docker image to Docker Hub
+    name: Push Docker images to Docker Hub
     runs-on: ubuntu-latest
     needs: tests
     steps:
@@ -41,48 +38,44 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Push backend to Docker Hub
+      - name: Push Backend to Docker Hub
         uses: docker/build-push-action@v2
         with:
-          context: backend
           push: true
+          context: backend/
           tags: nikolay2310/foodgram_backend-1:latest
-      - name: Push backend to Docker Hub
+
+      - name: Push Frontend to Docker Hub
         uses: docker/build-push-action@v2
         with:
-          context: backend
           push: true
+          context: frontend/
           tags: nikolay2310/foodgram_frontend-1:latest
   deploy:
+      runs-on: ubuntu-latest
+      needs: build_and_push_to_docker_hub
+      steps:
+        - name: executing remote ssh commands to deploy
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.HOST }}
+            username: ${{ secrets.USER }}
+            key: ${{ secrets.SSH_KEY }}
+            passphrase: ${{ secrets.SSH_PASSPHRASE }}
+            script: |
+              sudo docker-compose stop backend
+              sudo docker-compose rm backend
+              sudo docker system prune -a
+              docker pull mowb/backend:latest
+              sudo docker-compose up -d --build
+
+  send_message:
     runs-on: ubuntu-latest
-    needs:
-      - build_and_push_to_docker_hub
+    needs: deploy
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-      - name: Copy docker-compose.yml via ssh
-        uses: appleboy/scp-action@master
+      - name: send message
+        uses: appleboy/telegram-action@master
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          key: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "infra/docker-compose.yml"
-          target: "foodgram"
-      - name: Executing remote ssh commands to deploy
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          key: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: |
-            cd foodgram
-            cd infra
-            sudo docker compose -f docker-compose.yml pull
-            sudo docker compose -f docker-compose.yml down
-            sudo docker compose -f docker-compose.yml up -d
-            sudo docker compose -f docker-compose.yml exec backend python manage.py migrate
-            sudo docker compose -f docker-compose.yml exec backend python manage.py collectstatic
-            sudo docker compose -f docker-compose.yml exec backend cp -r /app/collected_static/. /static/
-            sudo docker compose -f docker-compose.yml exec backend yes
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: ${{ github.workflow }} успешно выполнен!
