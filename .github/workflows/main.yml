@@ -1,4 +1,4 @@
-name: Foodgram-workflow
+name: Main Foodgram workflow
 
 on: [push]
 
@@ -57,6 +57,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
+          cd foodgram-project-react
           cd infra/
           sudo docker pull nikolay2310/foodgram_backend-1:latest
           sudo docker-compose stop
