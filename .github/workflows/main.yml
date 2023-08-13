@@ -62,6 +62,8 @@ jobs:
             username: ${{ secrets.USER }}
             key: ${{ secrets.SSH_KEY }}
             passphrase: ${{ secrets.SSH_PASSPHRASE }}
+            source: "infra/docker-compose.yml"
+            target: "foodgram"
             script: |
               sudo docker-compose stop backend
               sudo docker-compose rm backend
