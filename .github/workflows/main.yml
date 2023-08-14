@@ -69,7 +69,7 @@ jobs:
               sudo docker compose -f docker-compose.yml pull
               sudo docker compose -f docker-compose.yml down
               sudo docker compose -f docker-compose.yml up -d
-              sudo docker compose -f docker-compose.yml exec infra-backend-1 python manage.py makemigrations users
+              sudo docker compose -f docker-compose.yml exec -it infra-backend-1 python manage.py makemigrations users
               sudo docker compose -f docker-compose.yml exec infra-backend-1 python manage.py makemigrations app
               sudo docker compose -f docker-compose.yml exec infra-backend-1 python manage.py migrate
               sudo docker compose -f docker-compose.yml exec infra-backend-1 python manage.py collectstatic
