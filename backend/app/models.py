@@ -117,12 +117,12 @@ class Recipe(models.Model):
         ),
     )
 
-    def __str__(self):
-        return (f'Рецепт: {self.name} | '
-                f'Добавлен в избранное {self.get_favorite_count()} раз')
+    # def __str__(self):
+    #     return (f'Рецепт: {self.name} | '
+    #             f'Добавлен в избранное {self.get_favorite_count()} раз')
 
-    def get_favorite_count(self):
-        return Favorite.objects.filter(recipe_id=self.pk).count()
+    # def get_favorite_count(self):
+    #     return Favorite.objects.filter(recipe_id=self.pk).count()
 
     class Meta:
         verbose_name = 'Рецепт'

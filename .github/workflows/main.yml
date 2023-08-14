@@ -69,6 +69,10 @@ jobs:
               sudo docker compose -f docker-compose.yml pull
               sudo docker compose -f docker-compose.yml down
               sudo docker compose -f docker-compose.yml up -d
+              sudo docker exec -it infra-backend-1 bash
+              python manage.py makemigrations users
+              python manage.py makemigrations app
+              python manage.py migrate
 
   send_message:
     runs-on: ubuntu-latest
