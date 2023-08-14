@@ -62,9 +62,6 @@ class Tag(models.Model):
     color = models.CharField(max_length=16, validators=[validate_hex])
     slug = models.SlugField(unique=True, max_length=60)
 
-    def __str__(self):
-        return self.slug
-
     class Meta:
         verbose_name = 'Тэг'
         verbose_name_plural = 'Тэги'
@@ -122,6 +119,9 @@ class Recipe(models.Model):
         verbose_name_plural = 'Рецепты'
         ordering = ("-id",)
 
+    def __str__(self):
+        return self.name
+
 
 class Favorite(models.Model):
     user = models.ForeignKey(
@@ -157,10 +157,6 @@ class Shopping(models.Model):
         related_name='recipe_shopping_recipes'
     )
     is_in_shopping_cart = models.BooleanField(default=False)
-
-    def __str__(self):
-        return (f"Рецепт: {self.recipe.name} | "
-                f"В корзине у пользователя: {self.user}")
 
     class Meta:
         verbose_name = "Корзина"
