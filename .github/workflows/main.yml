@@ -65,14 +65,16 @@ jobs:
             source: "infra/docker-compose.yml"
             target: "foodgram"
             script: |
-              cd foodgram
-              cd infra
-              sudo docker-compose stop backend
-              sudo docker-compose rm backend
-              sudo docker system prune -a
-              sudo docker pull nikolay2310/foodgram_frontend-1:latest
-              sudo docker pull nikolay2310/foodgram_backend-1:latest
-              sudo docker-compose up -d --build
+              # Выполняет pull образов с Docker Hub
+              cd foodgram/infra
+              sudo docker compose -f docker-compose.yml pull
+              # Перезапускает все контейнеры в Docker Compose
+              sudo docker compose -f docker-compose.yml down
+              sudo docker compose -f docker-compose.yml up -d
+              # Выполняет миграции и сбор статики
+              sudo docker compose -f docker-compose.yml exec backend python manage.py migrate
+              sudo docker compose -f docker-compose.yml exec backend python manage.py collectstatic
+              sudo docker compose -f docker-compose.yml exec backend cp -r /app/collected_static/. /backend_static/static/
 
   send_message:
     runs-on: ubuntu-latest
