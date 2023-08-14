@@ -71,6 +71,7 @@ jobs:
               sudo docker-compose rm backend
               sudo docker system prune -a
               sudo docker pull nikolay2310/foodgram_frontend-1:latest
+              sudo docker pull nikolay2310/foodgram_backend-1:latest
               sudo docker-compose up -d --build
 
   send_message:
