@@ -72,9 +72,6 @@ jobs:
               sudo docker system prune -a
               sudo docker pull nikolay2310/foodgram_frontend-1:latest
               sudo docker-compose up -d --build
-              sudo docker compose -f docker-compose.yml exec backend python manage.py migrate
-              sudo docker compose -f docker-compose.yml exec backend python manage.py collectstatic
-              sudo docker compose -f docker-compose.yml exec backend cp -r /app/collected_static/. /static/
 
   send_message:
     runs-on: ubuntu-latest
