@@ -120,7 +120,7 @@ class Recipe(models.Model):
         ordering = ("-id",)
 
     def __str__(self):
-        return self.name
+        return self.pk
 
 
 class Favorite(models.Model):
