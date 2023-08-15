@@ -47,8 +47,8 @@ class RecipeAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "name",
-        # "display_ingredients",
-        # "display_tags",
+        "display_ingredients",
+        "display_tags",
         "author",
         "get_favorite_count",
     )
