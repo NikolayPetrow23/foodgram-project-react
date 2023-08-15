@@ -66,6 +66,9 @@ class Tag(models.Model):
         verbose_name = 'Тэг'
         verbose_name_plural = 'Тэги'
 
+    def __str__(self):
+        return self.name
+
 
 class Recipe(models.Model):
     tags = models.ManyToManyField(Tag)
@@ -137,8 +140,7 @@ class Favorite(models.Model):
     is_favorited = models.BooleanField(default=False)
 
     def __str__(self):
-        return (f"Рецепт: {self.recipe.name} | "
-                f"Пользователь: {self.user}")
+        return self.recipe.name
 
     class Meta:
         verbose_name = "Избранное"
