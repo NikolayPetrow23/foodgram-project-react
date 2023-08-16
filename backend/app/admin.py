@@ -45,11 +45,11 @@ class RecipeAdmin(admin.ModelAdmin):
     model = Recipe
     inlines = (RecipeIngredientInline, )
     list_display = (
-        # "id",
-        # "name",
-        # "display_ingredients",
-        # "display_tags",
-        # "author",
+        "id",
+        "name",
+        "display_ingredients",
+        "display_tags",
+        "author",
         "get_favorite_count",
     )
     search_fields = (
@@ -67,17 +67,17 @@ class RecipeAdmin(admin.ModelAdmin):
     readonly_fields = ["get_favorite_count"]
     empty_value_display = IS_EMPTY_MESSAGE
 
-    # def display_ingredients(self, obj):
-    #     return ", ".join(
-    #         [ingredient.name for ingredient in obj.ingredients.all()]
-    #     )
-    #
-    # display_ingredients.short_description = "Ingredients"
-    #
-    # def display_tags(self, obj):
-    #     return ", ".join([tag.name for tag in obj.tags.all()])
-    #
-    # display_tags.short_description = "Tags"
+    def display_ingredients(self, obj):
+        return ", ".join(
+            [ingredient.name for ingredient in obj.ingredients.all()]
+        )
+
+    display_ingredients.short_description = "Ingredients"
+
+    def display_tags(self, obj):
+        return ", ".join([tag.name for tag in obj.tags.all()])
+
+    display_tags.short_description = "Tags"
 
     def get_favorite_count(self, obj):
         return obj.recipe_favorite_recipes.count()

@@ -47,7 +47,7 @@ class RecipeIngredients(models.Model):
     )
 
     def __str__(self):
-        return self.amount
+        return self.name
 
     class Meta:
         constraints = [
