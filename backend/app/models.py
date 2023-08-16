@@ -47,7 +47,7 @@ class RecipeIngredients(models.Model):
     )
 
     def __str__(self):
-        return self.name
+        return f'В рецепте {self.recipe} есть ингредиент {self.ingredient}'
 
     class Meta:
         constraints = [
@@ -140,7 +140,7 @@ class Favorite(models.Model):
     is_favorited = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.recipe.name
+        return f'Рецепт {self.recipe} в избранном у {self.user}'
 
     class Meta:
         verbose_name = "Избранное"
@@ -163,3 +163,6 @@ class Shopping(models.Model):
     class Meta:
         verbose_name = "Корзина"
         verbose_name_plural = "Корзины"
+
+    def __str__(self):
+        return f'Рецепт {self.recipe} в списке покупок у {self.user}'
