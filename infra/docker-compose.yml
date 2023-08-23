@@ -11,6 +11,8 @@ services:
     env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
+    restart: always
+
   backend:
     image: nikolay2310/foodgram_backend-1:latest
     env_file: .env
@@ -19,10 +21,12 @@ services:
       - media:/app/media/
     depends_on:
       - db
+
   frontend:
     image: nikolay2310/foodgram_frontend-1:latest
     volumes:
       - ./frontend/:/app/result_build/
+
   nginx:
     image: nginx:1.19.3
     ports:
@@ -33,3 +37,6 @@ services:
       - ./docs/:/usr/share/nginx/html/api/docs/
       - static:/var/html/static/
       - media:/var/html/media/
+    depends_on:
+      - backend
+    restart: always

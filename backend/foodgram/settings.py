@@ -30,7 +30,12 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [os.getenv('IP_SERVER'), os.getenv('PROJECT_HOST'), os.getenv('LOCAL_HOST'), os.getenv('PROJECT_DOMAIN')]
+ALLOWED_HOSTS = [
+    os.getenv('IP_SERVER'),
+    os.getenv('PROJECT_HOST'),
+    os.getenv('LOCAL_HOST'),
+    os.getenv('PROJECT_DOMAIN')
+]
 
 
 # Application definition
@@ -137,7 +142,7 @@ AUTH_USER_MODEL = 'users.User'
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
