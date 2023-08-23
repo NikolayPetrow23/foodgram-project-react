@@ -1,10 +1,8 @@
 from django.contrib import admin
-from rest_framework.authtoken.models import Token
+
 from users.models import Follow, User
 
 IS_EMPTY_MESSAGE = '--пусто--'
-
-admin.site.unregister(Token)
 
 
 @admin.register(User)
